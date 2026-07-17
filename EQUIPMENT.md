@@ -169,3 +169,89 @@ transcription, labeling, QA, export) runs as-is — no modification needed.
 
 The live hand-tracking preview in the app uses the same MediaPipe model
 (`hand_landmarker.task`) the prototype already bundles.
+
+---
+
+## 8. Shopping List — Concrete Buys
+
+This is what you buy today to put a working rig in someone's hands. All items
+work together: camera → USB-C cable → Android phone → app. Total per rig:
+**~$44** (worker's own phone) or **~$194** (dedicated phone included).
+
+### Camera (pick one)
+
+| Option | Model | Price | Why |
+|---|---|---|---|
+| **A — ELP USB module** | ELP 1080P USB Camera Module, 100° wide-angle, UVC, 32×32mm board cam. Search "ELP USB camera 100 degree 1080p" on Amazon | $22–35 | Bare board — tiny, no case, perfect for hat-mounting. UVC, plug-and-play on Android. Ships with USB-A cable; add USB-C OTG adapter or swap cable. |
+| **B — Ear-mount mini cam** | "Ear-Mounted USB Camera 1080P HDR Mini Webcam" on AliExpress / eBay. USB-C native, 80° FOV, ear clip included | $15–25 | Already clips onto a hat brim. Slightly narrower angle — test that hands fill frame at working distance. |
+| **C — Arducam** | Arducam 1080P Mini UVC USB Camera Module, 120° wide-angle | $25–40 | 120° FOV — nearly guarantees hands stay in frame. Larger (38×38mm) but still hat-mountable. |
+
+**Recommendation:** start with **A (ELP)**, order B as a cheap backup.
+
+### Cable
+
+- USB-C OTG adapter ($4–8) if using ELP/Arducam (they ship with USB-A cables).
+- Or right-angle USB-C to USB-C, 1m braided (Anker or Amazon Basics, $6–12).
+- Cable runs: camera (hat) → down neck → pocket.
+
+### Phone (if worker doesn't own one)
+
+- **Google Pixel 5a** (Android 14, USB-C OTG, 128GB) — ~$100–130 on Swappa.
+- **OnePlus Nord N200** — ~$80–110.
+- Any Android 11+ with USB-C OTG. Minimum: 64GB storage, 4GB RAM.
+- **No iPhone** — UVC camera support on iOS is MFI-gated and unreliable.
+
+### Hat + Mount
+
+- **Baseball cap** — worker's own or dollar-store ($5).
+- **GoPro hat clip** — "GoPro hat clip mount" on Amazon, $8–12. Clips to brim.
+- **3M Dual Lock** (SJ3560, 250/250 density) — $8/roll. Holds camera firmly,
+  removable. Better than Velcro for this.
+
+### Power (full-shift capture)
+
+- **Anker PowerCore Slim 10,000mAh** — $20–25. Belt-clip. Adds ~8 hrs recording.
+
+### Verification App (free)
+
+- Install **"USB Camera"** by ShenYaoCN from Google Play. Plug camera → open
+  app → see live feed. If this works, the Data Hat app will too.
+
+### Two Complete Rigs
+
+**Budget (worker's own phone):**
+```
+ELP USB camera module          $28
+USB-C OTG adapter               $6
+GoPro hat clip                  $9
+3M Dual Lock tape (1 strip)     $1
+Baseball cap (worker's)         $0
+Phone (worker's own Android)    $0
+───────────────────────────────────
+Total:                         ~$44
+```
+
+**Dedicated (we supply everything):**
+```
+ELP USB camera module          $28
+USB-C OTG adapter               $6
+GoPro hat clip                  $9
+3M Dual Lock tape               $1
+Baseball cap                    $5
+Pixel 5a (refurb)             $115
+Anker 10k power bank           $22
+Right-angle USB-C cable         $8
+───────────────────────────────────
+Total:                        ~$194
+```
+
+### Where to Buy
+
+| Item | Source | Search term |
+|---|---|---|
+| ELP camera | Amazon | "ELP USB camera 1080p 100 degree" |
+| Ear-mount cam | AliExpress | "ear mounted USB camera 1080p UVC Android" |
+| Pixel 5a | Swappa / Back Market | "Google Pixel 5a unlocked" |
+| GoPro hat clip | Amazon | "GoPro hat clip mount" |
+| USB-C OTG adapter | Amazon | "USB C OTG adapter" |
+| 3M Dual Lock | Amazon | "3M Dual Lock SJ3560" |
