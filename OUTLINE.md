@@ -95,8 +95,61 @@ Three sourcing tiers:
    passive. Requires homeowner consent addendum (see §6).
 2. **Gig workers in their own homes**: lowest legal friction (their own home), decent task
    variety, easy onboarding. Pay per verified hour (~$20–25/hr equivalent).
-3. **Staged task homes** (later): rent/furnish a few apartments as controlled capture
+3. **Home stagers staging vacant homes** (partner channel — see §5a): stagers
+   physically furnish empty homes for real-estate listings — assembling furniture,
+   making beds, arranging kitchens, hanging art, placing decor. That is hours of
+   dense, bimanual manipulation in *empty* homes with one consented party (the
+   seller) and no residents. Potentially the best data channel we have.
+4. **Staged task homes** (later): rent/furnish a few apartments as controlled capture
    studios for rare tasks and edge cases.
+
+## 5a. Home-stager channel (deep dive)
+
+Why it's structurally attractive:
+- **The privacy problem inverts.** Occupied homes need homeowner + family consent,
+  face blurring, PII scrubbing. A vacant staged home has one counterparty: the
+  seller (via the listing agent). The staging company already holds a signed
+  contract to work in that home — we add a recording rider. No kids, no
+  bystanders, no personal belongings in frame. Cleanest possible consent chain,
+  and consent-chain quality is the moat (§9).
+- **The work is manipulation-dense.** Furniture assembly (hex keys, cam locks,
+  drawer slides), bed-making, hanging/leveling frames, unboxing, placing decor,
+  arranging table settings, steaming linens. These are exactly the long-horizon,
+  bimanual, tool-use tasks humanoid demos struggle with — and they're scarce in
+  existing datasets (Ego4D is heavy on cooking/social, not furniture assembly).
+- **Every home is a new environment.** Stagers rotate constantly across floor
+  plans, lighting, and furniture styles → environment diversity for free, the
+  property labs pay a premium for.
+- **Aligned economics.** Stagers are paid by the staging company per job; we pay
+  a per-accepted-hour royalty on top. They're already working — the camera is
+  passive. Same math as the cleaning-company tier, but with zero-occupant homes.
+- **No bathroom/bedroom exclusions needed** — nobody lives there. Whole-home
+  capture is in protocol, including closet organization and garage tasks.
+
+What's different vs. cleaning footage (the tradeoff):
+- Staging is **setup** work (assemble, place, arrange), not **maintenance** work
+  (wipe, wash, fold, tidy). Buyers want both; staging complements cleaning data
+  rather than replacing it. Tool-use and assembly make it arguably the premium
+  tier, not the cheaper one.
+- Staging jobs are episodic (a home stages in 1–2 days, then de-stages weeks
+  later) → throughput per worker is lower than a cleaner's daily route. Mitigate
+  by signing the *company*, not individuals: one mid-size staging firm runs many
+  concurrent jobs, and we equip the whole crew.
+- Staging companies have low headcount per metro (a handful of crews) → this is
+  a relationships business: 5–10 signed staging partners could anchor the
+  channel; you don't need hundreds.
+
+Revenue/expense notes:
+- Staging is a $2.5k–4k-per-job service industry (30–90 day furniture rental
+  contracts); companies are operationally sophisticated and margin-hungry → a
+  per-hour data royalty is a genuinely interesting side-revenue pitch for them.
+- Equipment: same ~$250 hat-cam kits; crews are small, so kit cost is trivial.
+- Also capture **de-staging** (disassembly, packing, loading) — doubles the
+  episode yield per home and adds pack/unpack tasks buyers can't get elsewhere.
+
+Positioning: this becomes the **premium tier** in the catalog — "Assembly &
+Arrangement, captured in real vacant homes" — sold alongside (not instead of)
+the cleaning/maintenance corpus.
 
 Ops mechanics: task assignment app ("today: kitchen deep-clean, 2 loads laundry, narrate"),
 upload queue, per-hour acceptance criteria (hands visible ≥70%, narration coverage ≥50%,
@@ -187,9 +240,10 @@ Deliverable: one LeRobot-format episode + a verdict on auto-label quality.
 hrs, real consent docs (attorney), QA station, open 50-hr sample dataset, 1–2 design-partner
 labs. Validate: acceptance rate, cost/hour, whether a lab will actually pay.
 
-**Phase 2 — Commercial (6–12 months):** first cleaning-company partnership, 5–10k hrs/yr
-run-rate, paid licenses, task-category exclusives, premium tier (gloves/gripper-proxy,
-staged homes).
+**Phase 2 — Commercial (6–12 months):** first cleaning-company partnership, plus
+1–2 home-staging company pilots (§5a) as the premium "Assembly & Arrangement"
+tier; 5–10k hrs/yr run-rate across channels, paid licenses, task-category
+exclusives, premium tier (gloves/gripper-proxy, staged capture homes).
 
 **Phase 3 — Platform:** self-serve custom-collection marketplace; license the QA/labeling
 stack; expand to non-home verticals (restaurant kitchens, hotel housekeeping — commercial
