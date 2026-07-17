@@ -227,27 +227,27 @@ def main():
             o, ["First-person data", "for home robots"], 1.8,
             sub="what a capture shift looks like")),
         ("02_meet", lambda o: seg_still(
-            o, STILLS / "a_front.png", 6.2,
+            o, STILLS / "a_front.png", 6.7,
             caption="Head-cam pointed at the hands",
-            badge_text="CAPTURE SHIFT · KITCHEN CLEAN", vo=VO / "vo1.wav")),
+            badge_text="CAPTURE SHIFT · KITCHEN CLEAN", vo=VO / "vo1.mp3")),
         ("03_high", lambda o: seg_still(
-            o, STILLS / "b_high.png", 5.6, caption="Real work, real homes",
-            badge_text="ANGLE 2", vo=VO / "vo2.wav", zoom_in=False)),
+            o, STILLS / "b_high.png", 7.0, caption="Real work, real homes",
+            badge_text="ANGLE 2", vo=VO / "vo2.mp3", zoom_in=False)),
         ("04_pov_tracked", lambda o: seg_pov_tracked(
-            o, STILLS / "c_pov.png", 7.0, "wipe(plate)", vo=VO / "vo3.wav")),
+            o, STILLS / "c_pov.png", 8.5, "wipe(plate)", vo=VO / "vo3.mp3")),
         ("05_pov_labels", lambda o: seg_pov_tracked(
-            o, STILLS / "f_pov_fold.png", 6.0, "fold(cloth)",
-            vo=VO / "vo4.wav", zoom_in=False)),
-        ("06_qa", lambda o: seg_qa(o, 6.4, vo=VO / "vo5.wav")),
+            o, STILLS / "f_pov_fold.png", 7.5, "fold(cloth)",
+            vo=VO / "vo4.mp3", zoom_in=False)),
+        ("06_qa", lambda o: seg_qa(o, 7.4, vo=VO / "vo5.mp3")),
         ("07_dataset", lambda o: seg_still(
-            o, STILLS / "d_front_sink.png", 5.6,
+            o, STILLS / "d_front_sink.png", 5.9,
             caption="Enriched episodes, exported LeRobot-ready",
-            badge_text="videos/  data/  meta/", vo=VO / "vo6.wav",
+            badge_text="videos/  data/  meta/", vo=VO / "vo6.mp3",
             zoom_in=False)),
         ("08_end", lambda o: seg_title(
-            o, ["Real homes. Real tasks. Real data."], 3.4,
+            o, ["Real homes. Real tasks. Real data."], 3.2,
             sub="egocentric capture · hand tracking · task labels · QA",
-            vo=VO / "vo7.wav")),
+            vo=VO / "vo7.mp3")),
     ]
     for name, fn in plan:
         seg_path = OUT / f"{name}.mp4"
@@ -256,12 +256,26 @@ def main():
         segs.append(seg_path)
 
     concat = OUT / "concat.txt"
-    concat.write_text("".join(f"file '{s.resolve()}'\n" for s in segs))
+    inputs = "".join(f"file '{s.resolve()}'\n" for s in segs)
+    concat.write_text(inputs)
     final = OUT / "egodata_demo.mp4"
-    subprocess.run(["ffmpeg", "-y", "-f", "concat", "-safe", "0", "-i",
-                    str(concat), "-c:v", "libx264", "-pix_fmt", "yuv420p",
-                    "-c:a", "aac", "-movflags", "+faststart", str(final)],
-                   check=True, capture_output=True)
+
+    # Build filter: normalize all inputs then concat
+    n = len(segs)
+    filter_parts = []
+    for i in range(n):
+        filter_parts.append(f"[{i}:v][{i}:a]")
+    filter_str = f"{''.join(filter_parts)}concat=n={n}:v=1:a=1[v][a]"
+
+    cmd = ["ffmpeg", "-y"]
+    for s in segs:
+        cmd += ["-i", str(s)]
+    cmd += ["-filter_complex", filter_str,
+            "-map", "[v]", "-map", "[a]",
+            "-c:v", "libx264", "-pix_fmt", "yuv420p",
+            "-c:a", "aac", "-ar", "44100",
+            "-movflags", "+faststart", str(final)]
+    subprocess.run(cmd, check=True, capture_output=True)
     r = subprocess.run(["ffprobe", "-v", "quiet", "-show_entries",
                         "format=duration", "-of", "csv=p=0", str(final)],
                        capture_output=True, text=True)
