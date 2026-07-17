@@ -1,0 +1,8 @@
+file '/Users/bychabuxton/egodata-venture/prototype/assets/demo/01_title.mp4'
+file '/Users/bychabuxton/egodata-venture/prototype/assets/demo/02_meet.mp4'
+file '/Users/bychabuxton/egodata-venture/prototype/assets/demo/03_high.mp4'
+file '/Users/bychabuxton/egodata-venture/prototype/assets/demo/04_pov_tracked.mp4'
+file '/Users/bychabuxton/egodata-venture/prototype/assets/demo/05_pov_labels.mp4'
+file '/Users/bychabuxton/egodata-venture/prototype/assets/demo/06_qa.mp4'
+file '/Users/bychabuxton/egodata-venture/prototype/assets/demo/07_dataset.mp4'
+file '/Users/bychabuxton/egodata-venture/prototype/assets/demo/08_end.mp4'

@@ -1,1 +1,25 @@
-prototype/
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Dart/Flutter
+.dart_tool/
+.packages
+build/
+*.iml
+.idea/
+.gradle/
+local.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data artifacts (gitignored)
+data/
+dataset/
+captures/
+uploads/
+*.manifest.jsonl

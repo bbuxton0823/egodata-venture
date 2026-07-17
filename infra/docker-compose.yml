@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  api:
+    build: ../backend
+    ports:
+      - "8000:8000"
+    environment:
+      - EGODATA_API_KEY=${EGODATA_API_KEY:-}
+      - EGODATA_UPLOAD_DIR=/data/uploads
+      - EGODATA_RAW_BUCKET=${EGODATA_RAW_BUCKET:-egodata-raw}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+      - EGODATA_S3_ENDPOINT=${EGODATA_S3_ENDPOINT:-}
+      - EGODATA_S3_REGION=${EGODATA_S3_REGION:-auto}
+    volumes:
+      - uploads:/data/uploads
+    restart: unless-stopped
+
+  pipeline:
+    build: ../prototype
+    environment:
+      - EGODATA_API_KEY=${EGODATA_API_KEY:-}
+      - EGODATA_RAW_BUCKET=${EGODATA_RAW_BUCKET:-egodata-raw}
+    volumes:
+      - uploads:/data/uploads
+      - dataset:/data/dataset
+    entrypoint: ["python", "/app/pipeline_poller.py"]
+    restart: unless-stopped
+
+volumes:
+  uploads:
+  dataset:
