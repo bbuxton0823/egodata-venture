@@ -100,9 +100,6 @@ Three sourcing tiers:
    making beds, arranging kitchens, hanging art, placing decor. That is hours of
    dense, bimanual manipulation in *empty* homes with one consented party (the
    seller) and no residents. Potentially the best data channel we have.
-4. **Staged task homes** (later): rent/furnish a few apartments as controlled capture
-   studios for rare tasks and edge cases.
-
 ## 5a. Home-stager channel (deep dive)
 
 Why it's structurally attractive:
@@ -155,6 +152,93 @@ Ops mechanics: task assignment app ("today: kitchen deep-clean, 2 loads laundry,
 upload queue, per-hour acceptance criteria (hands visible ≥70%, narration coverage ≥50%,
 label QA pass), payment on acceptance.
 
+## 5b. Overseas workforce (labor arbitrage + market access)
+
+Collecting data in developing countries multiplies the business on two axes:
+**cost per data-hour drops ~60–80%**, and **tasks not common in Western homes**
+(washing by hand, floor-sweeping with brooms, clothesline work, charcoal/kerosene
+cooking) fill gaps in the training distribution that US-only data misses.
+
+### Country candidates (ranked by existing annotation workforce + staging/cleaning ecosystem)
+
+| Country | Cleaning/staging industry | Labor rate (gig/hr) | Smartphone penetration | Annotation workforce | Risk factors |
+|---|---|---|---|---|---|
+| **Philippines** | Strong — large domestic-worker sector, active real-estate staging market, English-speaking narration | $3–6 | Very high (Android dominant) | Existing BPO/annotation hubs (TaskUs, Scale AI vendors) | Typhoons disrupt ops; some regions have spotty power |
+| **Vietnam** | Growing — domestic cleaning services in HCMC/Hanoi; staging nascent but real estate is booming | $2–5 | High (Xiaomi/Samsung Android) | Growing annotation sector (FPT Software, VNG) | Language: narration in Vietnamese needs separate Whisper model (works fine, just not English) |
+| **India** | Massive — domestic workers + Gurgaon/Mumbai/Bangalore staging market, English-speaking workforce | $2–5 | High (Android dominant) | World's largest annotation workforce | Home quality variance extreme (mansion → slum in one data day); caste dynamics in domestic work |
+| **Colombia** | Strong — domestic service sector in Bogota/Medellin + growing staging market, Spanish narration | $3–6 | High (Android) | Growing BPO sector (Teleperformance, Lean Staffing) | Security: some neighborhoods unsafe for equipment; content insurance needed |
+| **Mexico** | Strong — domestic workers + CDMX/Monterrey staging, proximity to US buyers | $4–8 | High (Android) | Mature annotation hubs (nearshoring for US tech) | Narration in Spanish; higher labor cost than SE Asia |
+| **South Africa** | Moderate — domestic workers + Cape Town/JHB staging, English-English narration, strong labor laws | $4–7 | Moderate-high (Android) | Small but growing annotation sector | Equipment theft risk; labor-law complexity |
+
+### Channel comparison: domestic vs. overseas
+
+| Metric | US domestic workers | US stagers | Overseas (Philippines/Vietnam/India) |
+|---|---|---|---|
+| **Labor cost per data-hour** | $20–30 | $25–35 (stagers are skilled) | $2–6 |
+| **All-in cost per enriched hour** | $35–55 | $40–60 | $8–18 |
+| **Consent complexity** | High (homeowners) | Low (seller via agent) | Medium (varies by country; simpler if worker films own home) |
+| **Narration language** | English | English | English (PH/IN), Vietnamese, Spanish → multi-language corpus is a positive differentiator for global robot deployment |
+| **Task diversity** | Western homes | Vacant Western homes | Adds hand-wash, floor-sweep, charcoal cooking, bucket laundry — distribution edge |
+| **Equipment logistics** | Ship domestically | Ship domestically | Ship + local partner handles distribution + replacement |
+| **Buyer perception** | "US data = premium" | "US data = premium" | "overseas data = cheaper but less controlled" → mitigate with rigorous QA + consent docs |
+
+### Operational model
+
+**Don't try to run overseas ops directly.** Partner with an existing annotation
+company that already has a workforce in-country and is looking to expand into
+video data collection (they're all looking — iMerit, Sama, Scale vendors,
+local BPOs). They bring:
+
+- Existing workforce with smartphones
+- HR/payroll/payment rails
+- Physical office for equipment staging and returns
+- On-the-ground QA supervisors
+
+You bring: the hat-cam kits, the app, the pipeline, the consent framework, and
+the buyer relationships. Revenue split: you keep the buyer contract; they get
+~40–55% of the data-hour price for sourcing the workforce + local ops.
+
+### Narration strategy
+
+- **Philippines / India**: English narration works; no additional pipeline work.
+- **Vietnam / Colombia / Mexico**: narrate in local language. Whisper handles
+  Vietnamese and Spanish with good accuracy; task labels map to the same
+  taxonomy (the taxonomy is language-agnostic — `wipe(plate)` = `lau đĩa` =
+  `limpiar plato`). The multi-language corpus is a *selling point*, not a bug:
+  "our data is multilingual because your robot ships globally."
+
+### Equipment notes for overseas
+
+- Same kit works everywhere — USB-C is universal, Android phones are dominant.
+- Use refurb phones if workers don't own one (identical to US fleet).
+- SIM card with data plan for upload (cheap in all candidate countries).
+- Power banks more important (less reliable grid in some regions).
+
+### Risk: data quality perception
+
+The biggest risk is that a US lab looks at an overseas dataset and thinks
+"cheap, uncontrolled, probably not real." Mitigations:
+
+- Same camera rig, same app, same pipeline, same QA gate. The data looks
+  identical to US-captured data to a dataloader — it's a LeRobot episode with
+  the same schema.
+- Publish QA reports per episode; make the QA gate public (open-source the
+  metrics).
+- Lead with US + staging data as the flagship; add overseas as a volume tier
+  once the brand is established.
+- Do NOT market it as "cheap overseas data." Market it as "multi-country,
+  multi-language, multi-home-type training corpus." Last line of the slide:
+  "Collected in the United States, Philippines, Vietnam, India, Colombia, and
+  Mexico." That's a strength, not a disclosure.
+
+### Recommendation
+
+Start US-only (stagers + cleaners) for brand + quality anchors. Add overseas
+in Phase 2 via a single partner-country pilot — **Philippines** is the obvious
+first pick: English narration, existing annotation workforce, strong
+cleaning/staging sectors, US-aligned legal framework. One 6-month pilot with
+10–20 workers → validate cost/quality/consent chain → then add Vietnam and
+Colombia if the numbers hold.
 ## 6. Legal & privacy (the make-or-break section)
 
 - **Worker consent**: employment/contractor agreement covering recording, likeness, data
