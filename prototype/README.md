@@ -23,7 +23,8 @@ raw video ──► hand tracking (21 kps × 2 hands) ──► narration transc
 | `qa_metrics.py` | acceptance gate: hand/narration/label coverage |
 | `lerobot_export.py` | episode → `videos/ + data/ + meta/` LeRobot layout |
 | `pipeline.py` | all five stages, one command |
-| `make_demo_video.py` | renders the shareable demo (assets/demo/egodata_demo.mp4) |
+| `make_demo_video.py` | renders the original narrated demo (assets/demo/egodata_demo.mp4) |
+| `make_demo_video_multi.py` | renders the multi-angle demo (assets/demo/egodata_demo_multi.mp4) |
 | `test_pipeline.py` | end-to-end verification (real detector + stage contracts) |
 
 ## Setup
@@ -57,13 +58,35 @@ Output: `dataset/` with `videos/episode_000001.mp4`,
 `meta/episodes.jsonl` + `meta/tasks.jsonl`. QA report prints PASS/FAIL with
 coverage percentages (thresholds in `qa_metrics.py`).
 
-## Demo video
+## Demo videos
 
-`assets/demo/egodata_demo.mp4` (40 s, 1080p): narrated concept walkthrough —
-capture rig → POV with real hand-skeleton overlay → QA gate → export format.
-Rebuild with `python make_demo_video.py`. Stills in `assets/stills/` are
-AI-generated placeholders for illustration, not captured data; the hand
-skeletons in the POV segments are real MediaPipe detections on those frames.
+**Multi-angle** (`assets/demo/egodata_demo_multi.mp4`, 52 s, 1080p): front,
+side, high, and rig close-up angles of a worker wearing the head camera,
+then a REAL MediaPipe hand-skeleton capture clip proving the live pipeline
+tracks hands. Rebuild with:
+
+```bash
+python hermes-verify-capture.py   # builds data/verify/pov_fixture.overlay.mp4
+python make_demo_video_multi.py
+```
+
+**Original** (`assets/demo/egodata_demo.mp4`, 40 s, 1080p): narrated concept
+walkthrough — capture rig → POV with real hand-skeleton overlay → QA gate →
+export format. Rebuild with `python make_demo_video.py`.
+
+Stills in `assets/stills/` are AI-generated placeholders for illustration, not
+captured data; the hand skeletons in the POV segments are real MediaPipe
+detections on those frames.
+
+## Live camera capture (macOS TCC caveat)
+
+`capture_rig.py` opens the first available camera and draws the hand skeleton
+in real time. On macOS the terminal app must be granted Camera access under
+System Settings → Privacy & Security → Camera, otherwise OpenCV prints
+"not authorized to capture video" and returns zero devices. The automated
+verification path (`test_pipeline.py` + `hermes-verify-capture.py`) exercises
+the same detection loop on a pre-recorded fixture so CI and unattended runs
+still verify the full pipeline.
 
 ## Prototype scope (what's deliberately thin)
 
