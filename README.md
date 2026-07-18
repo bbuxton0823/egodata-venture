@@ -5,9 +5,16 @@
 A phone app + backend that turns everyday household work into structured,
 rights-clean training episodes for embodied-AI and humanoid-robot labs.
 
+**Visual-only pipeline — no audio, no narration, no transcription.**
+Workers tap task labels on the phone while working. The camera captures hands.
+The enrichment pipeline tracks 21 keypoints × 2 hands at 30fps, scores every
+episode on hand visibility and task-label coverage, and exports in LeRobot format.
+
 ```
    Data Hat app  ──►  ingest API  ──►  enrichment pipeline  ──►  LeRobot dataset
    (Flutter)          (FastAPI)         (Python/MediaPipe)        (Parquet+mp4)
+
+   📹 video only · 🔖 chip-tap task labels · 🤖 hand tracking · ✅ QA gate
 ```
 
 ---

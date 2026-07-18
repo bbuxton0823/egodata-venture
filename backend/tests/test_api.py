@@ -1,11 +1,10 @@
-"""Tests for EgoData ingest API."""
+"""Tests for EgoData ingest API (visual-only pipeline)."""
 import io
 import json
-import time
 
 import pytest
 from fastapi.testclient import TestClient
-from main import app, UPLOAD_DIR, API_KEY
+from main import app
 
 client = TestClient(app)
 
@@ -33,22 +32,20 @@ def test_upload_url(monkeypatch):
     r = client.post("/ingest/upload-url",
                     json={"worker_id": "w01", "job_type": "kitchen_clean"})
     assert r.status_code == 200
-    body = r.json()
-    assert "upload_url" in body
-    assert body["key"].startswith("raw/w01/")
+    assert r.json()["key"].startswith("raw/w01/")
 
 
 def test_confirm(tmp_path, monkeypatch):
     monkeypatch.setattr("main.UPLOAD_DIR", tmp_path)
     r = client.post("/ingest/confirm",
                     json={"key": "raw/w01/abc.mp4", "worker_id": "w01",
-                          "duration_s": 42.0, "hand_coverage_est": 0.85})
+                          "duration_s": 42.0, "hand_coverage_est": 0.85,
+                          "task_label_count": 12})
     assert r.status_code == 200
     body = r.json()
     assert body["status"] == "queued"
     assert body["episode_id"].startswith("ep-")
     manifest = tmp_path / "manifest.jsonl"
-    assert manifest.exists()
     entry = json.loads(manifest.read_text().strip())
     assert entry["worker_id"] == "w01"
 

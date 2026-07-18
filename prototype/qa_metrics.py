@@ -1,10 +1,10 @@
-"""QA metrics for a captured episode.
+"""QA metrics for a captured episode (visual-only pipeline).
 
-Computes the acceptance criteria from the business plan:
+Acceptance criteria:
   - hand visibility coverage >= 70% of frames
-  - narration coverage >= 50% of duration
   - labeled-task coverage >= 60% of duration
-Exit code 0 = pass, 1 = fail (usable in CI).
+No audio/narration — the pipeline is visual-only.
+Exit code 0 = pass, 1 = fail.
 """
 import argparse
 import json
@@ -13,8 +13,7 @@ from pathlib import Path
 
 import pandas as pd
 
-THRESHOLDS = {"hand_coverage_pct": 70.0, "narration_coverage_pct": 50.0,
-              "task_coverage_pct": 60.0}
+THRESHOLDS = {"hand_coverage_pct": 70.0, "task_coverage_pct": 60.0}
 
 
 def qa(hands_parquet: Path, tasks_json: Path, duration_s: float) -> dict:
@@ -22,16 +21,13 @@ def qa(hands_parquet: Path, tasks_json: Path, duration_s: float) -> dict:
     frames_with_hands = df["frame"].nunique()
 
     tasks = json.loads(tasks_json.read_text())
-    narrated = sum(t["end"] - t["start"] for t in tasks if t["narration"].strip())
-    labeled = sum(t["end"] - t["start"] for t in tasks if t["task"] != "idle/other")
+    labeled = sum(t["end"] - t["start"] for t in tasks
+                  if t.get("task") and t["task"] != "unlabeled")
 
-    # frames_with_hands is relative to processed frames; duration in seconds
-    # assume ~constant fps: total frames ~= duration * fps inferred from max frame
     total_frames = max(int(df["frame"].max()) + 1, 1) if len(df) else 1
     report = {
         "duration_s": duration_s,
         "hand_coverage_pct": round(100.0 * frames_with_hands / total_frames, 2),
-        "narration_coverage_pct": round(100.0 * narrated / max(duration_s, 0.01), 2),
         "task_coverage_pct": round(100.0 * labeled / max(duration_s, 0.01), 2),
         "episodes": len(tasks),
         "keypoint_rows": len(df),

@@ -1,7 +1,6 @@
 """Poll the ingest manifest for queued episodes and run the pipeline.
 
-This is the MVP job runner — polls `manifest.jsonl`, picks up QUEUED jobs,
-runs the full pipeline, and marks them DONE.
+Visual-only pipeline — no audio, no narration, no transcription.
 """
 import json
 import os
@@ -15,8 +14,6 @@ MANIFEST = UPLOAD_DIR / "manifest.jsonl"
 DATASET = Path(os.getenv("EGODATA_DATASET_DIR", "dataset"))
 POLL_SECONDS = int(os.getenv("EGODATA_POLL_INTERVAL", "30"))
 
-PROTO = Path(__file__).parent
-
 
 def run_pipeline(entry: dict):
     key = entry["key"]
@@ -28,22 +25,18 @@ def run_pipeline(entry: dict):
 
     print(f"pipeline start: {episode_id}")
     from hand_tracking import track_video
-    from narration_transcribe import transcribe
-    from task_segmenter import segment_tasks
     from lerobot_export import export
     from qa_metrics import qa
 
     hands_pq = video.with_suffix(".hands.parquet")
-    df = track_video(video, hands_pq)
+    track_video(video, hands_pq)
 
-    audio = video.with_suffix(".wav")
-    subprocess.run(["ffmpeg", "-y", "-i", str(video), "-vn", "-ac", "1",
-                    "-ar", "16000", str(audio)],
-                   check=True, capture_output=True)
-    segs = transcribe(audio) if audio.stat().st_size > 800 else []
-    tasks = segment_tasks(segs)
+    # Task labels: check for companion JSON from the app (chip-taps)
     tasks_json = video.with_suffix(".tasks.json")
-    tasks_json.write_text(json.dumps(tasks))
+    if not tasks_json.exists():
+        tasks_json = video.parent / (video.stem + "_tasks.json")
+    if not tasks_json.exists():
+        tasks_json.write_text("[]")
 
     r = subprocess.run(["ffprobe", "-v", "quiet", "-show_entries",
                         "format=duration", "-of", "csv=p=0", str(video)],

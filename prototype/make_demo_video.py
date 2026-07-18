@@ -187,7 +187,6 @@ def seg_pov_tracked(out, img_path, dur, task_label, vo=None, zoom_in=True):
 
 def seg_qa(out, dur, vo=None):
     metrics = [("hand visibility", 0.94, 0.70),
-               ("narration coverage", 0.88, 0.50),
                ("task label coverage", 0.91, 0.60)]
     p = out.with_suffix(".silent.mp4")
     vw = writer(p)
@@ -209,7 +208,7 @@ def seg_qa(out, dur, vo=None):
             cv2.line(frame, (tx, y + 12), (tx, y + 70), (200, 200, 200), 2)
             text(frame, f"{shown*100:4.1f}%  (min {int(thr*100)}%)",
                  60 + bar_w + 40, y + 54, 0.95, WHITE, 2)
-            y += 175
+            y += 190
         if t01 > 0.65:
             alpha = min(1.0, (t01 - 0.65) / 0.15)
             col = tuple(int(c * alpha) for c in GREEN)
@@ -227,25 +226,25 @@ def main():
             o, ["First-person data", "for home robots"], 1.8,
             sub="what a capture shift looks like")),
         ("02_meet", lambda o: seg_still(
-            o, STILLS / "a_front.png", 6.7,
+            o, STILLS / "a_front.png", 6.5,
             caption="Head-cam pointed at the hands",
             badge_text="CAPTURE SHIFT · KITCHEN CLEAN", vo=VO / "vo1.mp3")),
         ("03_high", lambda o: seg_still(
-            o, STILLS / "b_high.png", 7.0, caption="Real work, real homes",
+            o, STILLS / "b_high.png", 7.8, caption="Real work, real homes — no audio, just vision",
             badge_text="ANGLE 2", vo=VO / "vo2.mp3", zoom_in=False)),
         ("04_pov_tracked", lambda o: seg_pov_tracked(
-            o, STILLS / "c_pov.png", 8.5, "wipe(plate)", vo=VO / "vo3.mp3")),
+            o, STILLS / "c_pov.png", 6.2, "wipe(plate)", vo=VO / "vo3.mp3")),
         ("05_pov_labels", lambda o: seg_pov_tracked(
-            o, STILLS / "f_pov_fold.png", 7.5, "fold(cloth)",
+            o, STILLS / "f_pov_fold.png", 7.0, "fold(cloth)",
             vo=VO / "vo4.mp3", zoom_in=False)),
-        ("06_qa", lambda o: seg_qa(o, 7.4, vo=VO / "vo5.mp3")),
+        ("06_qa", lambda o: seg_qa(o, 5.7, vo=VO / "vo5.mp3")),
         ("07_dataset", lambda o: seg_still(
-            o, STILLS / "d_front_sink.png", 5.9,
+            o, STILLS / "d_front_sink.png", 5.5,
             caption="Enriched episodes, exported LeRobot-ready",
             badge_text="videos/  data/  meta/", vo=VO / "vo6.mp3",
             zoom_in=False)),
         ("08_end", lambda o: seg_title(
-            o, ["Real homes. Real tasks. Real data."], 3.2,
+            o, ["Real homes. Real tasks. Real data."], 3.3,
             sub="egocentric capture · hand tracking · task labels · QA",
             vo=VO / "vo7.mp3")),
     ]

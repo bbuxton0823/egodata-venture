@@ -59,6 +59,7 @@ class ConfirmRequest(BaseModel):
     worker_id: str
     duration_s: float
     hand_coverage_est: float | None = None
+    task_label_count: int = 0
 
 
 class ConfirmResponse(BaseModel):
