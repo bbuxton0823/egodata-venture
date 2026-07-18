@@ -45,29 +45,38 @@ laptop, no SD cards, no post-shift file transfers.
 ## 2. Hat Camera Assembly
 
 ```
-        ┌─────── hat brim ───────┐
-        │                        │
-        │    [camera module]     │  ← pointed forward+down at ~45° pitch
-        │     └── USB-C ──┘      │     hands ~60–80cm ahead and below
-        │          │             │
-   ─────┴──────────┴──────────┴───
-   │                              │
-   │    cable tucked inside hat   │
-   │    runs down back of neck    │
-   └──────────────────────────────┘
+              hat crown
+        ┌──────────────────────┐
+        │   ┌──────────────┐   │  ← GoPro clip jaw clamps brim
+        │   │   hat brim   │   │
+        └───┴──────┬───────┴───┘
+                   │ GoPro finger mount (hangs below brim)
+              ┌────┴─────┐
+              │ ELP box  │  ← under-brim mount, angled ~40–55° down
+              │ camera   │     hands ~60–80cm ahead and below
+              └────┬─────┘
+                   │ USB cable
+   ────────────────┼────────────────
+   │  cable under inner hat band,   │
+   │  out the back, down collar     │
+   └────────────────────────────────┘
               │
               ▼
         [phone in pocket]
          recording + tracking
 ```
 
-1. Attach the clip bracket to the hat brim or headband using Velcro/screws.
-2. Mount camera in the clip so it points **40–55° downward** (the worker's
-   hands at natural working height should fill 40–70% of the frame width).
-3. Plug USB-C cable into the camera and route it along the hat inner band,
+1. Clamp the GoPro clip jaw onto the hat brim from above.
+2. Attach the ELP box housing to the GoPro finger mount hanging below the
+   brim using 3M Dual Lock (or a 1/4"-20 GoPro tripod adapter if the housing
+   has a threaded boss).
+3. Aim the camera **40–55° downward** — the worker's hands at natural working
+   height should fill 40–70% of the frame width. The under-brim position
+   shields the lens from overhead light and stays out of the sightline.
+4. Plug the USB cable into the camera, route it along the hat inner band,
    out the back, down the collar, into the pocket.
-4. Worker puts hat on, opens app, taps the calibration screen (see §3).
-5. The app shows a live preview with a hand-tracking skeleton — worker adjusts
+5. Worker puts hat on, opens app, taps the calibration screen (see §3).
+6. The app shows a live preview with a hand-tracking skeleton — worker adjusts
    camera angle until both hands are reliably detected at their normal working
    posture. One-time ~30-second setup.
 
@@ -182,11 +191,19 @@ work together: camera → USB-C cable → Android phone → app. Total per rig:
 
 | Option | Model | Price | Why |
 |---|---|---|---|
-| **A — ELP USB module** | ELP 1080P USB Camera Module, 100° wide-angle, UVC, 32×32mm board cam. Search "ELP USB camera 100 degree 1080p" on Amazon | $22–35 | Bare board — tiny, no case, perfect for hat-mounting. UVC, plug-and-play on Android. Ships with USB-A cable; add USB-C OTG adapter or swap cable. |
+| **A — ELP USB box camera (PURCHASED)** | ELP 1080P USB Camera with box housing, 100° wide-angle, UVC. Search "ELP USB camera 100 degree 1080p box" on Amazon | $28–45 | Cased module — more durable than the bare board, better for a fleet. Mounts to the GoPro brim clip via 3M Dual Lock or 1/4"-20 adapter. UVC, plug-and-play on Android. Ships with USB-A cable; add USB-C OTG adapter or swap cable. |
 | **B — Ear-mount mini cam** | "Ear-Mounted USB Camera 1080P HDR Mini Webcam" on AliExpress / eBay. USB-C native, 80° FOV, ear clip included | $15–25 | Already clips onto a hat brim. Slightly narrower angle — test that hands fill frame at working distance. |
 | **C — Arducam** | Arducam 1080P Mini UVC USB Camera Module, 120° wide-angle | $25–40 | 120° FOV — nearly guarantees hands stay in frame. Larger (38×38mm) but still hat-mountable. |
 
-**Recommendation:** start with **A (ELP)**, order B as a cheap backup.
+**Purchased rig (prototype #1):** ELP 1080P USB camera with box housing +
+GoPro hat clip, mounted to the **underside of the baseball-cap brim**, angled
+down at the hands. The under-brim position shields the lens from overhead
+light, keeps the camera out of the worker's sightline, and puts the lens at
+the natural "look down at hands" angle. Assembly: GoPro clip jaw clamps the
+brim from above → GoPro finger mount hangs below the brim → ELP box housing
+attaches via 3M Dual Lock (or 1/4"-20 GoPro tripod adapter if the housing has
+a threaded boss). Cable exits the rear of the housing, routes under the hat's
+inner band, down the collar, to the phone in a pocket.
 
 ### Cable
 
@@ -221,19 +238,19 @@ work together: camera → USB-C cable → Android phone → app. Total per rig:
 
 **Budget (worker's own phone):**
 ```
-ELP USB camera module          $28
+ELP USB box camera               $38
 USB-C OTG adapter               $6
 GoPro hat clip                  $9
 3M Dual Lock tape (1 strip)     $1
 Baseball cap (worker's)         $0
 Phone (worker's own Android)    $0
 ───────────────────────────────────
-Total:                         ~$44
+Total:                         ~$54
 ```
 
 **Dedicated (we supply everything):**
 ```
-ELP USB camera module          $28
+ELP USB box camera               $38
 USB-C OTG adapter               $6
 GoPro hat clip                  $9
 3M Dual Lock tape               $1
@@ -242,14 +259,14 @@ Pixel 5a (refurb)             $115
 Anker 10k power bank           $22
 Right-angle USB-C cable         $8
 ───────────────────────────────────
-Total:                        ~$194
+Total:                        ~$204
 ```
 
 ### Where to Buy
 
 | Item | Source | Search term |
 |---|---|---|
-| ELP camera | Amazon | "ELP USB camera 1080p 100 degree" |
+| ELP box camera | Amazon | "ELP USB camera 1080p 100 degree box housing" |
 | Ear-mount cam | AliExpress | "ear mounted USB camera 1080p UVC Android" |
 | Pixel 5a | Swappa / Back Market | "Google Pixel 5a unlocked" |
 | GoPro hat clip | Amazon | "GoPro hat clip mount" |
